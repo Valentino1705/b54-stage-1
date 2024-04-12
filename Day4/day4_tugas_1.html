@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Day4</title>
+        <link rel="stylesheet" href="day4_tugas_1.css">
+    </head>
+    <body>
+        <nav>
+            <div class="kiri">
+                <ul>
+                    <img src="logo1.png" style="width: 65px;">
+                    <li class="active">
+                    <li>
+                        <a href="day2_tugas_1.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="#">My Project</a>
+                    </li>
+                    </li>
+                </ul>
+            </div>
+            <div class="kanan">
+                <a href="#">Contact Me</a>
+            </div>
+        </nav>
+        <div id="formApp">
+            <h1 style="text-align: center;">ADD MY PROJECT</h1>
+                <form>
+                    <div>
+                        <label for="projectname" style="font-weight: bold;">Project Name</label>
+                        <input type="text" id="projectname" required placeholder="Project Name">
+                    </div>
+
+                    <div style="display: flex;" class="date">
+                        <div>
+                            <label for="startdate" style="font-weight: bold;">Start Date</label>
+                            <input type="date" id="startdate" required placeholder="startdate">
+                        </div>
+
+                        <div>
+                            <label for="enddate" style="font-weight: bold;">End Date</label>
+                            <input type="date" id="enddate" required placeholder="enddate">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="description" style="font-weight: bold;">Description</label>
+                        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                    </div>
+
+                    <div>
+                        <div>
+                            <label for="Technologies" style="font-weight: bold;">Technologies</label>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: auto auto;">
+                            <div style="display: flex;">
+                                <input type="checkbox" name="nodejs" id="nodejs" style="width: auto;">
+                                <label for="nodejs">Node Js</label>
+                            </div>
+                            <div style="display: flex;">
+                                <input type="checkbox" name="reactjs" id="reactjs" style="width: auto;">
+                                <label for="reactjs">React Js</label>
+                            </div>
+                            <div style="display: flex;">
+                                <input type="checkbox" name="nextjs" id="nextjs" style="width: auto;">
+                                <label for="nextjs">Next Js</label>
+                            </div>
+                            <div style="display: flex;">
+                                <input type="checkbox" name="typescrip" id="typescrip" style="width: auto;">
+                                <label for="typescrip">Type Scrip</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="Uploadimage" style="font-weight: bold;">Upload Image</label>
+                        <input type="file" name="uploadimage" id="uploadimage">
+                    </div>
+
+                    <div>
+                        <button type="button" id="submit" onclick="submitProject(event)">Submit</button>
+                    </div>
+                </form>
+
+                <div style="background-color: white; padding: 20px; text-align: left; min-height: 400px;">
+                    <h1 style="margin-bottom: 20px;">My Projects</h1>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px" id="projects">
+                        
+                    </div>
+                </div>
+        </div>
+        <div id="detailApp" style="padding: 40px; display: none;">
+            <button onclick="closeDetail()" style="margin: 0">Close</button>
+            <h1 id="project-title">a</h1>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-bottom: 40px;">
+                <img id="detailImage" src="" alt="" style="width: 100%;" />
+                <div>
+                    <div>
+                        <h3 style="margin: 0;">Duration</h3>
+                        <p style="margin: 0" id="detailDates">a</p>
+                        <p style="margin: 0" id="detailDuration">a</p>
+                    </div>
+                    <div>
+                        <h3 style="margin: 0;">Technologies</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr;" id="detailStacks">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="detailDescription"></div>
+        </div>
+
+        <script>
+            let projectData = [];
+
+            function submitProject (e) {
+                e.preventDefault();
+                
+                const projectname = document.getElementById('projectname').value;
+                const startdate = document.getElementById('startdate').value;
+                const enddate = document.getElementById('enddate').value;
+                const description = document.getElementById('description').value;
+                const nodejs = document.getElementById('nodejs').checked;
+                const reactjs = document.getElementById('reactjs').checked;
+                const nextjs = document.getElementById('nextjs').checked;
+                const typescrip = document.getElementById('typescrip').checked;
+                const file = document.getElementById('uploadimage').files[0];
+
+                if(projectname == '') {
+                    alert('Project name must be filled');
+                    return;
+                } else if(startdate == '') {
+                    alert('Start date must be filled');
+                    return;
+                } else if(enddate == '') {
+                    alert('End date must be filled');
+                    return;
+                } else if(description == '') {
+                    alert('Description must be filled');
+                    return;
+                } else if(!nodejs && !reactjs && !nextjs && !typescrip) {
+                    alert('Please select at least one stack');
+                    return;
+                } else if(file == '') {
+                    alert('Please upload an image');
+                    return;
+                }
+
+                if(startdate > enddate) {
+                    alert('Start date must be less than end date');
+                    return;
+                }
+
+                const base64File = URL.createObjectURL(file);
+
+                const stacks = [];
+                if (nodejs) stacks.push('Node Js');
+                if (reactjs) stacks.push('React Js');
+                if (nextjs) stacks.push('Next Js');
+                if (typescrip) stacks.push('TypeScript');
+
+
+                const data = {
+                    projectname,
+                    startdate,
+                    enddate,
+                    description,
+                    stacks,
+                    file: base64File
+                }
+
+                console.log(data);
+
+                projectData.push(data);
+
+                document.getElementById("projects").innerHTML += renderItem(data, projectData.length - 1)
+            }
+
+            function renderItem (data, i) {
+                return `
+                    <div style="padding: 10px; border-radius: 10px; box-shadow: 0px 1px 5px 0px rgba(0,0,0,0.40);">
+                        <img src="${data.file}" alt="img" style="width: 100%; height: 200px; object-fit: cover;">
+                        <p style="font-weight: 600; margin: 0;" onclick="toDetail('${i}')">Project Name: ${data.projectname}</p>
+                        <p style="margin: 0;">Duration: ${jarakWaktu(data.startdate, data.enddate)} hari</p>
+                        <p>${data.description}</p>
+                        <p style="font-weight: 600;">Stacks: ${data.stacks.join(', ')}</p>
+                        <div style="display: flex;">
+                            <button style="width: 100%; margin-left: 0; margin-right: 5px;">edit</button>
+                            <button style="width: 100%; margin-left: 0;">delete</button>
+                        </div>
+                    </div>
+                `
+            }
+
+            function toDetail (index) {
+                const data = projectData[index];
+                document.getElementById('project-title').innerText = data.projectname;
+                document.getElementById('detailImage').src = data.file;
+                document.getElementById('detailDates').innerText = `${data.startdate} - ${data.enddate}`;
+                document.getElementById('detailDuration').innerText = `Duration: ${jarakWaktu(data.startdate, data.enddate)} days`;
+                document.getElementById('detailDescription').innerText = data.description;
+
+                let stacksElement = document.getElementById('detailStacks');
+                stacksElement.innerHTML = '';
+                data.stacks.forEach(stack => {
+                    stacksElement.innerHTML += `<p style="margin: 0">${stack}</p>`;
+                });
+
+                document.getElementById('detailApp').style.display = 'block';
+                document.getElementById('formApp').style.display = 'none';
+            }
+
+            function closeDetail () {
+                document.getElementById('detailApp').style.display = 'none';
+                document.getElementById('formApp').style.display = 'block';
+            }
+
+            function jarakWaktu (start, end) {
+                const startDate = new Date(start);
+                const endDate = new Date(end);
+
+                const diffTime = Math.abs(endDate - startDate);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                return diffDays;
+            }
+        </script>
+    </body>
+</html>

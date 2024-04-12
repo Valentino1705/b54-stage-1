@@ -1,0 +1,70 @@
+body{
+  font: 16px/28px arial, sans-serif;
+  background-color: white;
+}
+
+/* navbar */
+
+nav{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #dbdbdb;
+  padding: 0 159px;
+}
+
+nav .kiri ul {
+  display: flex;
+  align-items: center;
+}
+
+nav .kiri ul img {
+  margin-right: 40;
+}
+
+nav .kiri ul li {
+  list-style-type: none;
+  margin-right: 30px;
+}
+
+nav .kiri ul li a {
+  text-decoration: none;
+  color: black;
+}
+
+nav .kiri ul .active a {
+  color: orangered;
+  font-weight: bold;
+}
+
+nav .kanan a {
+  text-decoration: none;
+  background-color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.container {
+  width: 1030px;
+  margin-left: 210px;
+  padding-left: 45px;
+  padding-right: 1px;
+  background-color: whitesmoke;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  margin-top: 30px;
+  
+}
+
+.header .parf {
+  margin-right: 60px;
+  text-align: justify;
+}
+
+.bingkai {
+  margin-right: 50px;
+}
